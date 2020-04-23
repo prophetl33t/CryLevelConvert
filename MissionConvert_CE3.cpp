@@ -1,18 +1,6 @@
-#include "MissionConvert.h"
+#include "MissionConvert_CE3.h"
 
-EntArchetypeObtainer MissionConvert::entarc = EntArchetypeObtainer();//Init archetype obtainer
-
-std::map <std::string, std::string> map_ent = //Some entites have different classes in editor and in game!
-{
-{ "EnvironmentLight","EnvironmentProbe" },
-{ "AreaShape","Shape" },
-{ "AITerritory", "Shape" },
-{ "LightShape", "Shape" },
-{ "RopeEntity", "Rope" }
-};
-
-
-bool MissionConvert::Convert()
+bool MissionConvert_CE3::Convert()
 {
 	if (!entarc.IsHavingData()) //If entity archetypes database is empty - then fill it.
 	{
@@ -126,7 +114,7 @@ bool MissionConvert::Convert()
 	return true;
 }
 
-void MissionConvert::ExtractTOD()
+void MissionConvert_CE3::ExtractTOD()
 {
 	tod_stream_out.close();
 	tod_stream_out.clear();
@@ -144,6 +132,7 @@ void MissionConvert::ExtractTOD()
 
 }
 
-MissionConvert::MissionConvert()
+MissionConvert_CE3::MissionConvert_CE3()
 {
 }
+

@@ -1,7 +1,6 @@
 //#define MAIN_DISABLE
 #define USE_PAK_INTERACTION
 
-#include "MissionConvert.h"
 #include "MovieDataConvert.h"
 #include "VegetationDumpConvert.h"
 #include "EntArchetypeObtainer.h"
@@ -12,8 +11,9 @@
 #ifdef USE_PAK_INTERACTION
 #include "zip_file.hpp"
 #endif
+#include "MissionConvert_CE3.h"
 
-inline void BatchConvert(const char* path, MissionConvert& c_m, MovieDataConvert& m_m, TerrainLayerInfoConvert& t_m)
+inline void BatchConvert(const char* path, MissionConvert_Base& c_m, MovieDataConvert& m_m, TerrainLayerInfoConvert& t_m)
 {
 	std::string work_dir = std::filesystem::current_path().string() + "\\";
 	miniz_cpp::zip_file unpacker(path);
@@ -36,7 +36,7 @@ inline void BatchConvert(const char* path, MissionConvert& c_m, MovieDataConvert
 int main(int argc, char* argv[])
 {
 	auto begin = std::chrono::steady_clock::now();
-	MissionConvert mis_convert;
+	MissionConvert_CE3 mis_convert;
 	MovieDataConvert mdata_convert;
 	TerrainLayerInfoConvert terlay_convert;
 
