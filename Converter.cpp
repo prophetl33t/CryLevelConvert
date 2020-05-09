@@ -9,7 +9,7 @@ bool XMLConverter::ConvertFromDisk(const std::string& path_in)
 		if (doc.load_file(path_in.c_str()).status != pugi::status_ok)
 		{
 			return false;
-			std::cout << "[Converter] Can't reload xml\n";
+			g_Log.Log("Can't reload xml",this,ERROR);
 		}
 		if (Convert())
 		{
@@ -38,7 +38,7 @@ bool XMLConverter::ConvertFromDisk(const std::vector<std::string>& paths_in)
 			if (doc.load_file(flist.c_str()).status != pugi::status_ok)
 			{
 				return false;
-				std::cout << "[MissionConvert] Can't reload xml\n";
+				g_Log.Log("Can't reload xml", this, ERROR);
 			}
 		}
 		if (!Convert())
@@ -55,7 +55,7 @@ XMLConverter::XMLConverter(const std::string& path_in)
 	res = doc.load_file(xml_path.c_str());
 	if (res.status != pugi::status_ok)
 	{
-		std::cout << "[Coverter] Can't properly parse XML!\n";
+		g_Log.Log("Can't properly parse XML!", this, ERROR);
 	}
 }
 

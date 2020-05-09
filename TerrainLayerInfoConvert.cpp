@@ -65,12 +65,12 @@ inline bool TerrainLayerInfoConvert::Convert()
 			terlay_fstream_out.write(reinterpret_cast<const char*>(&holder), sizeof(holder));
 			terlay_fstream_out.write(reinterpret_cast<const char*>(&size), sizeof(size));
 
-			std::cout << "[TerTexLayInfo] Exported terrain layers info to .lay!\n";
+			g_Log.Log("Exported terrain layers info to .lay!", this);
 			return true;
 		}
 		else
 		{
-			std::cout << "[TerTexLayInfo] Leveldata.xml doesn't have any information about terrain texture layers!\n";
+			g_Log.Log("Exported terrain layers info to .lay!", this,WARNING);
 			return false;
 		}
 	}

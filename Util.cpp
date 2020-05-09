@@ -1,6 +1,7 @@
 #include "Util.h"
 #include <filesystem>
 #include <iostream>
+#include "Converter.h"
 
 const std::string CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
@@ -139,5 +140,26 @@ void Util::DelayedExit()
 	}
 }
 
+bool Util::replace_last(std::string& str, const std::string& replace_what, const std::string& replacement)
+{
+	if (!str.empty() && !replace_what.empty())
+	{
+		size_t found = str.rfind(replace_what);
+		if (found != std::string::npos)
+		{
+			str.replace(found, replace_what.size(), replacement);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
 
+Logger g_Log;
 

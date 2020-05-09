@@ -20,14 +20,14 @@
     <ClCompile Include="MissionConvert_Base.cpp">
       <Filter>Converters\Shared</Filter>
     </ClCompile>
-    <ClCompile Include="MissionConvert_CE3.cpp">
-      <Filter>Converters\CE3</Filter>
-    </ClCompile>
     <ClCompile Include="MissionConvert_CE5.cpp">
       <Filter>Converters\CE5</Filter>
     </ClCompile>
     <ClCompile Include="EntArchetypeObtainer.cpp">
       <Filter>Converters\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="MissionConvert_CE3.cpp">
+      <Filter>Converters\CE3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,14 +52,14 @@
     <ClInclude Include="MissionConvert_Base.h">
       <Filter>Converters\Shared</Filter>
     </ClInclude>
-    <ClInclude Include="MissionConvert_CE3.h">
-      <Filter>Converters\CE3</Filter>
-    </ClInclude>
     <ClInclude Include="MissionConvert_CE5.h">
       <Filter>Converters\CE5</Filter>
     </ClInclude>
     <ClInclude Include="EntArchetypeObtainer.h">
       <Filter>Converters\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="MissionConvert_CE3.h">
+      <Filter>Converters\CE3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,9 +13,10 @@ static std::map <std::string, std::string> map_ent = //Some entites have differe
 { "RopeEntity", "Rope" }
 };
 
+const fs::path path_entfiles = "Entities";
 
 /// <summary>
-/// Base class for converter of mission_mission0.xml from different verisons of CE
+/// Base class for converter of mission_mission0.xml from different verisons of CE.
 /// </summary>
 class MissionConvert_Base : public XMLConverter
 {
@@ -25,8 +26,11 @@ protected:
 	std::map <std::string, std::string> m_map_guid_64;
 	std::map <std::string, std::string> m_map_id_parent;
 	std::fstream tod_stream_out;
-	inline virtual bool Convert() = 0;
+	//Instead of redefining whole Convert() method sometimes it is much easier to inject needed instructions in derived classes through this method. For example CE3 and CE5 conversions are almost identical. It executes after all conversions done. Look into MissionConvert_Base::Convert() for more info.
+	virtual void VersionSpecificInstructions();
+	virtual bool Convert();
+	bool SaveToDisk();
 public:
-	virtual void ExtractTOD() = 0;
+	virtual void ExtractTOD();
 	using XMLConverter::XMLConverter; //Deriving constructor
 };

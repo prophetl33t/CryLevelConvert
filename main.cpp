@@ -97,12 +97,12 @@ int main(int argc, char* argv[])
 	{
 		if (mis_convert.ConvertFromDisk(cry_fname::in::MISSIONXML))
 		{
-			std::cout << "[MissionConvert] Converted mission to .lyr!\n";
+			g_Log.Log("Converted mission to .lyr!", &mis_convert);
 			mis_convert.ExtractTOD();
 		}
 		if (mdata_convert.ConvertFromDisk(cry_fname::in::MDATA))
 		{
-			std::cout << "[MovieData] Converted moviedata to .lyr!\n";
+			g_Log.Log("Converted mission to .lyr!", &mdata_convert);
 		}
 		VegetationDumpConvert("veg_dump.txt", "clc_veg.veg");
 		terlay_convert.ConvertFromDisk(cry_fname::in::LVLDATA);

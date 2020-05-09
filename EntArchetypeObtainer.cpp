@@ -30,14 +30,14 @@ int EntArchetypeObtainer::FillEntArcList()
 				}
 				else
 				{
-					std::cout << "[EntArcObtain] Warning! Unable to parse " << x.path() << "\n";
+					g_Log.Log(("Unable to parse " + x.path().string()), this, WARNING);
 				}
 			}
 			std::cout << "[EntArcObtain] Got info about " << m_ent_arc_map.size() << " entity archetypes from EntityArchetype folder\n";
 		}
 		else
 		{
-			std::cout << "[EntArcObtain] Warning! Unable to find EntityArchetype folder. This may cause missing entites!\n";
+			g_Log.Log("Unable to find EntityArchetype folder. This may cause missing entites!", this, WARNING);
 		}
 	}
 	else
