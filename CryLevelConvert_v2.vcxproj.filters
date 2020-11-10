@@ -29,6 +29,9 @@
     <ClCompile Include="MissionConvert_CE3.cpp">
       <Filter>Converters\CE3</Filter>
     </ClCompile>
+    <ClCompile Include="CryVersionDetect.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CLCHeaders.h">
@@ -61,6 +64,10 @@
     <ClInclude Include="MissionConvert_CE3.h">
       <Filter>Converters\CE3</Filter>
     </ClInclude>
+    <ClInclude Include="CryVersionDetect.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="zippy\Zippy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Converters">

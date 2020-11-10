@@ -5,28 +5,30 @@
 #include "VegetationDumpConvert.h"
 #include "EntArchetypeObtainer.h"
 #include "TerrainLayerInfoConvert.h"
+#include "CryVersionDetect.h"
 #include <chrono>
 #include <locale>
 #include <codecvt>
-#ifdef USE_PAK_INTERACTION
-#include "zip_file.hpp"
-#endif
 #include "MissionConvert_CE3.h"
+
+#ifdef USE_PAK_INTERACTION
+#include "Zippy.hpp"
+#endif
 
 inline void BatchConvert(const char* path, MissionConvert_Base& c_m, MovieDataConvert& m_m, TerrainLayerInfoConvert& t_m)
 {
 	std::string work_dir = std::filesystem::current_path().string() + "\\";
-	miniz_cpp::zip_file unpacker(path);
-	unpacker.extract(unpacker.getinfo(cry_fname::in::MISSIONXML), work_dir);
+	Zippy::ZipArchive arch(path);
+	arch.ExtractEntry(cry_fname::in::MISSIONXML, work_dir);
 
 	c_m.ConvertFromDisk(work_dir + cry_fname::in::MISSIONXML);
 	c_m.ExtractTOD();
 
-	unpacker.extract(unpacker.getinfo(cry_fname::in::MDATA), work_dir);
+	arch.ExtractEntry(cry_fname::in::MDATA, work_dir);
 
 	m_m.ConvertFromDisk(work_dir + cry_fname::in::MDATA);
 
-	unpacker.extract(unpacker.getinfo(cry_fname::in::LVLDATA), work_dir);
+	arch.ExtractEntry(cry_fname::in::LVLDATA, work_dir);
 
 	t_m.ConvertFromDisk(work_dir + cry_fname::in::LVLDATA);
 	
@@ -35,6 +37,8 @@ inline void BatchConvert(const char* path, MissionConvert_Base& c_m, MovieDataCo
 
 int main(int argc, char* argv[])
 {
+	//EngineVersionUtils::LoadEngineVersionDB("C:\\CryLevelConvert\\VersionDBFinal.clcdb");
+	EngineVersionUtils::CreateVersionInfoFromString("1222.13231.11313.113141");
 	auto begin = std::chrono::steady_clock::now();
 	MissionConvert_CE3 mis_convert;
 	MovieDataConvert mdata_convert;

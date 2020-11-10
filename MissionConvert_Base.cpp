@@ -20,7 +20,7 @@ bool MissionConvert_Base::Convert()
 		{
 			for (auto& x : map_ent)
 			{
-				if (strcmp(mission_node.attribute("EntityClass").value(), x.first.c_str()) != 0)
+				if (strcmp(mission_node.attribute("EntityClass").value(), x.first.c_str()) == 0)
 				{
 					mission_node.attribute("Type").set_value(x.second.c_str());
 				}

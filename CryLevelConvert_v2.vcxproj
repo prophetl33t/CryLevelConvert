@@ -99,9 +99,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)pugixml\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)pugixml\src;$(SolutionDir)zippy</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
@@ -133,9 +133,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)pugixml\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)zippy;$(SolutionDir)pugixml\src</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="CryVersionDetect.cpp" />
     <ClCompile Include="EntArchetypeObtainer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MissionConvert_Base.cpp" />
@@ -166,6 +167,7 @@
   <ItemGroup>
     <ClInclude Include="CLCHeaders.h" />
     <ClInclude Include="Converter.h" />
+    <ClInclude Include="CryVersionDetect.h" />
     <ClInclude Include="EntArchetypeObtainer.h" />
     <ClInclude Include="MissionConvert_Base.h" />
     <ClInclude Include="MissionConvert_CE3.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="TerrainLayerInfoConvert.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="VegetationDumpConvert.h" />
+    <ClInclude Include="zippy\Zippy.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
