@@ -60,7 +60,7 @@ inline bool TerrainLayerInfoConvert::Convert()
 				terlay_fstream_out.write(reinterpret_cast<const char*>(&zero), sizeof(zero));
 			}
 
-			size = terlay_fstream_out.tellp().operator-(before).operator-(7);
+			size = terlay_fstream_out.tellp().operator-(before).operator-(std::streamoff(7));
 			terlay_fstream_out.seekp(std::ios_base::beg);
 			terlay_fstream_out.write(reinterpret_cast<const char*>(&holder), sizeof(holder));
 			terlay_fstream_out.write(reinterpret_cast<const char*>(&size), sizeof(size));
