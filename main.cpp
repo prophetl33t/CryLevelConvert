@@ -10,28 +10,29 @@
 #include <locale>
 #include <codecvt>
 #ifdef USE_PAK_INTERACTION
-#include "zip_file.hpp"
+#include "Zippy.hpp"
 #endif
 
 inline void BatchConvert(const char* path, MissionConvert& c_m, MovieDataConvert& m_m, TerrainLayerInfoConvert& t_m)
 {
 	std::string work_dir = std::filesystem::current_path().string() + "\\";
-	miniz_cpp::zip_file unpacker(path);
-	unpacker.extract(unpacker.getinfo(cry_fname::in::MISSIONXML), work_dir);
+	Zippy::ZipArchive arch(path);
+	arch.ExtractEntry(cry_fname::in::MISSIONXML, work_dir);
 
 	c_m.ConvertFromDisk(work_dir + cry_fname::in::MISSIONXML);
 	c_m.ExtractTOD();
 
-	unpacker.extract(unpacker.getinfo(cry_fname::in::MDATA), work_dir);
+	arch.ExtractEntry(cry_fname::in::MDATA, work_dir);
 
 	m_m.ConvertFromDisk(work_dir + cry_fname::in::MDATA);
 
-	unpacker.extract(unpacker.getinfo(cry_fname::in::LVLDATA), work_dir);
+	arch.ExtractEntry(cry_fname::in::LVLDATA, work_dir);
 
 	t_m.ConvertFromDisk(work_dir + cry_fname::in::LVLDATA);
-	
+
 	std::cout << "[BatchConvert] Complete!\n";
 }
+
 
 int main(int argc, char* argv[])
 {

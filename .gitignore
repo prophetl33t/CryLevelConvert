@@ -347,3 +347,4 @@ healthchecksdb
 EntityArchetypes
 EntityArchetypes/
 /zip_file.hpp
+pugixml/scripts/

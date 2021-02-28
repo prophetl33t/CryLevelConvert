@@ -20,6 +20,17 @@ bool MissionConvert::Convert()
 	}
 	for (pugi::xml_node mission_node = doc.select_node("/Mission/Objects/Entity").node(); mission_node; mission_node = mission_node.next_sibling()) //for every entity
 	{
+
+		if (!mission_node.attribute("Type").empty())
+		{
+			for (auto& x : map_ent)
+			{
+				if (strcmp(mission_node.attribute("EntityClass").value(), x.first.c_str()) == 0)
+				{
+					mission_node.attribute("Type").set_value(x.second.c_str());
+				}
+			}
+		}
 		for (auto& fg_node : doc.select_node("/Mission/Objects/Entity/FlowGraph/Nodes").node().children()) //collect info about entity guids
 		{
 			if (strcmp(fg_node.attribute("EntityGUID").value(), "") != 0 || strcmp(fg_node.attribute("EntityGUID_64").value(), "") != 0)
@@ -33,13 +44,14 @@ bool MissionConvert::Convert()
 		}
 		if (!mission_node.attribute("EntityGuid").empty()) //in .lyr files EntityGuid is Id
 		{
-			mission_node.attribute("EntityGuid").set_name("Id");
+			pugi::xml_attribute attr = mission_node.attribute("EntityGuid");
+			attr.set_name("Id");
 		}
 		if (strcmp(mission_node.name(), "Entity") == 0)
 		{
 			m_map_id_parent.emplace(mission_node.attribute("Id").value(), mission_node.attribute("EntityId").value());
 			mission_node.set_name("Object");
-			mission_node.append_attribute("Type").set_value("Entity"); 
+			mission_node.append_attribute("Type").set_value("Entity");
 			if (mission_node.child("Area")) //Areas have additional data in .lyr
 			{
 				mission_node.append_copy(mission_node.child("Area").child("Points"));
@@ -80,7 +92,7 @@ bool MissionConvert::Convert()
 		{
 			if (strcmp(link.node().attribute("TargetId").value(), x.second.c_str()) == 0)
 			{
-				link.node().attribute("TargetId").set_value(x.first.c_str());
+				link.node().attribute("TargetId").set_value(Util::GenerateGUIDFrom64(x.first, true).c_str());
 				break;
 			}
 		}
@@ -91,37 +103,28 @@ bool MissionConvert::Convert()
 		{
 			if (strcmp(ent.node().attribute("Id").value(), x.second.c_str()) == 0)
 			{
-				ent.node().attribute("Id").set_value(x.first.c_str());
+				ent.node().attribute("Id").set_value(Util::GenerateGUIDFrom64(x.first, true).c_str());
 				break;
 			}
 		}
 	}
+	bool valid_val = false;
 	for (pugi::xml_node mission_node = doc.select_node("/Mission/Objects/Object").node(); mission_node; mission_node = mission_node.next_sibling())
 	{
 		for (auto& id_64 : m_map_guid_64)
 		{
-			if (strcmp(mission_node.attribute("EntityId").value(), id_64.second.c_str()) == 0)
+			if (strcmp(mission_node.attribute("Id").value(), id_64.second.c_str()) == 0)
 			{
-				mission_node.attribute("Id").set_value(Util::GenerateGUIDFrom64(id_64.first, true).c_str());
-				//break;
+				mission_node.attribute("Id").set_value(id_64.first.c_str());
+				valid_val = true;
+				break;
 			}
 		}
-	}
-
-	//delete layer duplicates
-	std::sort(m_layer_names.begin(), m_layer_names.end());
-	m_layer_names.erase(unique(m_layer_names.begin(), m_layer_names.end()), m_layer_names.end());
-	for (auto& x : m_layer_names)
-	{
-		pugi::xml_document dc = Util::CreateLayerFile(x);
-		for (auto& a : doc.select_nodes("/Mission/Objects/Object"))
+		if (!valid_val && !mission_node.attribute("Id").empty())
 		{
-			if (strcmp(a.node().attribute("Layer").value(), x.c_str()) == 0)
-			{
-				dc.select_node("ObjectLayer/Layer/LayerObjects").node().append_copy(a.node());
-			}
+			mission_node.attribute("Id").set_value(Util::GenerateGUIDFrom64(mission_node.attribute("Id").value(), true).c_str()); //Editor requires GUID in it's special format. If it is not converted - editor will throw errors about duplicate objects.
 		}
-		dc.save_file(std::string(Util::PathWithoutFilename(xml_path) + x + ".lyr").c_str(), " "); //We need to save .lyr files in folder of level in case of converting multiple levels in a row.
+		valid_val = false;
 	}
 	return true;
 }

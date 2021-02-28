@@ -100,9 +100,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)pugixml\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)pugixml\src;$(SolutionDir)zippy</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="CryVersionDetect.cpp" />
     <ClCompile Include="EntArchetypeObtainer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MissionConvert.cpp" />
@@ -163,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="CLCHeaders.h" />
     <ClInclude Include="Converter.h" />
+    <ClInclude Include="CryVersionDetect.h" />
     <ClInclude Include="EntArchetypeObtainer.h" />
     <ClInclude Include="MissionConvert.h" />
     <ClInclude Include="MovieDataConvert.h" />

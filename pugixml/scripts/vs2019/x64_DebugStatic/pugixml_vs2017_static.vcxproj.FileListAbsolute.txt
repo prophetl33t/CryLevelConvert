@@ -1,0 +1,1 @@
+C:\CryLevelConvert\pugixml\scripts\vs2019\x64_DebugStatic\pugixml.lib

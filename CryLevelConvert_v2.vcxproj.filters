@@ -23,6 +23,9 @@
     <ClCompile Include="TerrainLayerInfoConvert.cpp">
       <Filter>Converters\XML</Filter>
     </ClCompile>
+    <ClCompile Include="CryVersionDetect.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CLCHeaders.h">
@@ -48,6 +51,9 @@
     </ClInclude>
     <ClInclude Include="TerrainLayerInfoConvert.h">
       <Filter>Converters\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="CryVersionDetect.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
