@@ -126,6 +126,22 @@ bool MissionConvert::Convert()
 		}
 		valid_val = false;
 	}
+
+	//delete layer duplicates
+	std::sort(m_layer_names.begin(), m_layer_names.end());
+	m_layer_names.erase(unique(m_layer_names.begin(), m_layer_names.end()), m_layer_names.end());
+	for (auto& x : m_layer_names)
+	{
+		pugi::xml_document dc = Util::CreateLayerFile(x);
+		for (auto& a : doc.select_nodes("/Mission/Objects/Object"))
+		{
+			if (strcmp(a.node().attribute("Layer").value(), x.c_str()) == 0)
+			{
+				dc.select_node("ObjectLayer/Layer/LayerObjects").node().append_copy(a.node());
+			}
+		}
+		dc.save_file(std::string(Util::PathWithoutFilename(xml_path) + x + ".lyr").c_str(), " "); //We need to save .lyr files in folder of level in case of converting multiple levels in a row.
+	}
 	return true;
 }
 
