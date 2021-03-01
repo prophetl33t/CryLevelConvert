@@ -15,6 +15,6 @@ It is recommended to place EntityArchetypes folder in working directory of CLC f
 
 #### Libraries used:
 XML parser:  
-pugixml github.com/zeux/pugixml  
+pugixml https://github.com/zeux/pugixml  
 Interactions with .pak files:  
-miniz-cpp github.com/tfussell/miniz-cpp  
+zippy https://github.com/troldal/Zippy
