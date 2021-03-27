@@ -1,4 +1,6 @@
 # CryLevelConvert
+[![Build status](https://ci.appveyor.com/api/projects/status/2x0bqxnnc9vugvuq?svg=true)](https://ci.appveyor.com/project/prophetl33t/crylevelconvert)
+
 Tool for conversion of level.pak files from Cryengine 3 game engine to format readable by Cryengine 3 Sandbox  
 
 ## What is convertible?
