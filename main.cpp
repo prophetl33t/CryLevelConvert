@@ -1,11 +1,11 @@
 //#define MAIN_DISABLE
 #define USE_PAK_INTERACTION
 
-#include "MissionConvert.h"
-#include "MovieDataConvert.h"
-#include "VegetationDumpConvert.h"
-#include "EntArchetypeObtainer.h"
-#include "TerrainLayerInfoConvert.h"
+#include "Converters/XML/MissionConvert.h"
+#include "Converters/XML/MovieDataConvert.h"
+#include "Converters/CustomFormat/VegetationDumpConvert.h"
+#include "XML/EntArchetypeObtainer.h"
+#include "Converters/XML/TerrainLayerInfoConvert.h"
 #include <chrono>
 #include <locale>
 #include <codecvt>

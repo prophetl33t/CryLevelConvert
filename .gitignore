@@ -346,5 +346,5 @@ healthchecksdb
 
 EntityArchetypes
 EntityArchetypes/
-/zip_file.hpp
-pugixml/scripts/
+cmake-build-release
+cmake-build-debug
