@@ -9,7 +9,8 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-
+  build_path: ""
+  
 jobs:
   build:
     # The CMake configure and build commands are platform agnostic and should work equally
@@ -49,3 +50,28 @@ jobs:
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --config $BUILD_TYPE
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: CLC-${{ matrix.os }}
+        path: CryLevelConvert/release/*.zip
+        retention-days: 1
+        
+  release:
+      name: "Release"
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/download-artifact@v2
+        - name: Display fetched artifacts
+          run: ls -R
+        - name: Automatic GitHub Release
+          uses: "marvinpinto/action-automatic-releases@latest"
+          with:
+            repo_token: "${{ secrets.GITHUB_TOKEN }}"
+            automatic_release_tag: "latest"
+            title: "CLC Build"
+            files: |
+              CLC-windows-latest/*.zip
+              CLC-ubuntu-latest/*.zip
+              CLC-macos-latest/*.zip    
