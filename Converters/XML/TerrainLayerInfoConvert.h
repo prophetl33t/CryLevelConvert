@@ -11,8 +11,8 @@ private:
 	uint8_t zero = 0;
 	uint8_t holder = 255;
 	std::smatch matname_match;
-	std::fstream terlay_fstream_in;
-	std::fstream terlay_fstream_out;
+	std::ifstream terlay_fstream_in;
+	std::ofstream terlay_fstream_out;
 	inline bool Convert() override;
 	//bool Convert() override;
 public:

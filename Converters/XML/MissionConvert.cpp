@@ -129,7 +129,7 @@ bool MissionConvert::Convert()
 
 	//delete layer duplicates
 	std::sort(m_layer_names.begin(), m_layer_names.end());
-	m_layer_names.erase(unique(m_layer_names.begin(), m_layer_names.end()), m_layer_names.end());
+	m_layer_names.erase(std::unique(m_layer_names.begin(), m_layer_names.end()), m_layer_names.end());
 	for (auto& x : m_layer_names)
 	{
 		pugi::xml_document dc = Util::CreateLayerFile(x);

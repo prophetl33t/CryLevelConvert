@@ -1,6 +1,5 @@
 #include "VegetationDumpConvert.h"
 
-
 std::fstream file_r_dump_veg_read;
 std::fstream file_rw_veg_dump;
 

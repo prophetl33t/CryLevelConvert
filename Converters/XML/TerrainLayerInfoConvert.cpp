@@ -23,11 +23,6 @@ inline bool TerrainLayerInfoConvert::Convert()
 		}
 		if (IsSurfDat)
 		{
-			//binary header
-			terlay_fstream_out.flags(std::fstream::binary);
-
-			//non-binary xml
-			terlay_fstream_out.flags(std::fstream::out);
 			terlay_fstream_out << "   <LayerSettings>\n";
 			terlay_fstream_out << " <SurfaceTypes>\n";
 			while (std::getline(terlay_fstream_in, buffer))
@@ -54,7 +49,6 @@ inline bool TerrainLayerInfoConvert::Convert()
 			terlay_fstream_out << "</LayerSettings>\n";
 
 			//binary end
-			terlay_fstream_out.flags(std::fstream::binary);
 			for (int a = 0; a < 4; a++)
 			{
 				terlay_fstream_out.write(reinterpret_cast<const char*>(&zero), sizeof(zero));
