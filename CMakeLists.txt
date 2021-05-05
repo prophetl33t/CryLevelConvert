@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.19)
 project(CryLevelConvert)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(3rdParty/pugixml-master/src)
-include_directories(3rdParty/pugixml-master/tests)
 include_directories(3rdParty/Zippy)
 include_directories(3rdParty/Zippy/Zippy)
 include_directories(3rdParty/Zippy/Zippy/miniz)
@@ -43,3 +43,11 @@ add_executable(CryLevelConvert
         Utils/Util.cpp
         Utils/Util.h
         main.cpp)
+
+file(GLOB_RECURSE _source_list *.cpp* *.h* *.hpp*)
+foreach(_source IN ITEMS ${_source_list})
+    get_filename_component(_source_path "${_source}" PATH)
+    string(REPLACE "${CMAKE_SOURCE_DIR}" "" _group_path "${_source_path}")
+    string(REPLACE "/" "\\" _group_path "${_group_path}")
+    source_group("${_group_path}" FILES "${_source}")
+endforeach()
