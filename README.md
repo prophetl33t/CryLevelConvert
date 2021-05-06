@@ -1,7 +1,10 @@
 # CryLevelConvert
 
 [![CMake](https://github.com/prophetl33t/CryLevelConvert/actions/workflows/cmake.yml/badge.svg?branch=master)](https://github.com/prophetl33t/CryLevelConvert/actions/workflows/cmake.yml)
-Download latest stable windows binary at https://github.com/prophetl33t/CryLevelConvert/releases/download/latest/CryLevelConvert.exe
+
+Download latest stable windows binary at
+
+https://github.com/prophetl33t/CryLevelConvert/releases/download/latest/CryLevelConvert.exe
 
 Tool for conversion of level.pak files from Cryengine 3 game engine to format readable by Cryengine 3 Sandbox  
 
