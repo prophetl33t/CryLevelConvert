@@ -1,10 +1,6 @@
 name: CMake
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: push
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -54,10 +50,11 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: CLC-${{ matrix.os }}
-        path: CryLevelConvert/release/*.zip
+        path: ${{github.workspace}}/build/Release/
         retention-days: 1
         
   release:
+      if: github.ref == 'refs/heads/master'
       name: "Release"
       needs: build
       runs-on: ubuntu-latest
@@ -72,6 +69,6 @@ jobs:
             automatic_release_tag: "latest"
             title: "CLC Build"
             files: |
-              CLC-windows-latest/*.zip
-              CLC-ubuntu-latest/*.zip
-              CLC-macos-latest/*.zip    
+              CLC-windows-latest
+              CLC-ubuntu-latest
+              CLC-macos-latest   
