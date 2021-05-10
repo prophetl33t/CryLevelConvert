@@ -3,6 +3,7 @@ project(CryLevelConvert)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_FLAGS -pthread)
 
 include_directories(3rdParty/pugixml-master/src)
 include_directories(Converters)
