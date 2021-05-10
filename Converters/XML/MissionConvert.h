@@ -2,6 +2,7 @@
 #include "Converter.h"
 #include "EntArchetypeObtainer.h"
 #include <unordered_map>
+#include <mutex>
 
 /// <summary>
 ///<para>XML Converter class</para><para>Input : mission_mission0.xml file from level.pak</para> <para>Output : .lyr files containing scripts/dynamic entities info</para>
@@ -15,8 +16,10 @@ private:
 	std::map <std::string, std::string> m_map_id_parent;
 	std::fstream tod_stream_out;
 	inline bool Convert() override; 
+	std::mutex entarc_lock;
 public:
 	void ExtractTOD();
+	static EntArchetypeObtainer& GetEntArcObtainter() { return entarc; };
 	MissionConvert();
 	using XMLConverter::XMLConverter; //Deriving constructor
 };

@@ -9,6 +9,7 @@
 #include <sstream>
 #include <map>
 #include "pugixml.hpp"
+#include "CLCHeaders.h"
 
 namespace fs = std::filesystem;
 

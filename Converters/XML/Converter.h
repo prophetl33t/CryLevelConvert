@@ -17,7 +17,7 @@ protected:
 public:
 	virtual bool ConvertFromDisk(const std::string& path_in);
 	virtual bool ConvertFromDisk(const std::vector<std::string>& paths_in);
-	//virtual bool ConvertFromMemory();
+	virtual bool ConvertFromByteArray(std::vector<unsigned char>& data);
 	XMLConverter(const std::string& path_in);
 	XMLConverter();
 };

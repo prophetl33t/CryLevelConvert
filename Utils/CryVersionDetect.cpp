@@ -6,7 +6,10 @@
 #include <fstream>
 #include <filesystem>
 #include <sstream>
-#include "Zippy.hpp"
+#ifdef USE_PAK_INTERACTION
+#include "zipper/unzipper.h"
+#endif
+
 std::vector<EngineVersionInfo> KNOWN_VERSIONS;
 
 size_t EngineVersionUtils::FindNthOccurence(std::string_view str, char ch, int num = 0)
@@ -58,17 +61,18 @@ void EngineVersionUtils::LoadEngineVersionDB(std::string_view path)
 
 void EngineVersionUtils::CreateEngineVersionDB(const char* path)
 {
+#ifdef USE_PAK_INTERACTION
 	std::map<std::string, std::string> vers;
 	pugi::xml_document doc_write;
 	std::string work_dir = std::filesystem::current_path().string() + "\\";
 	for (auto x : fs::recursive_directory_iterator(path))
 	{
-		if (std::string fname = x.path().filename().string(); fname == std::string("level.pak.zip"))
+		if (std::string fname = x.path().filename().string(); fname.find("level.pak") != std::string::npos)
 		{
 			pugi::xml_document doc_read;
-			Zippy::ZipArchive pak(x.path().generic_string());
+			zipper::Unzipper pak(x.path().generic_string());
 			std::string xml_path = x.path().parent_path().string();
-			pak.ExtractEntry("leveldata.xml", xml_path);
+			pak.extractEntry("leveldata.xml", xml_path);
 			doc_read.load_file((xml_path + std::string("\\leveldata.xml")).c_str());
 			vers.emplace(doc_read.select_node("/LevelData").node().attribute("SandboxVersion").value(), doc_read.select_node("/LevelData/LevelInfo").node().attribute("Name").value());
 		}
@@ -83,6 +87,7 @@ void EngineVersionUtils::CreateEngineVersionDB(const char* path)
 		doc_write.save_file((work_dir + "VersionDB.clcdb").c_str());
 	}
 	int x = 0;
+#endif
 }
 
 void EngineVersionUtils::CreateVersionInfoFromString(std::string_view str)

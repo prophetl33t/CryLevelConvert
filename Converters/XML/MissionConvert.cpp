@@ -14,13 +14,15 @@ std::map <std::string, std::string> map_ent = //Some entites have different clas
 
 bool MissionConvert::Convert()
 {
-	if (!entarc.IsHavingData()) //If entity archetypes database is empty - then fill it.
+	for (auto& fg_node : doc.select_node("/Mission/Objects/Entity/FlowGraph/Nodes").node().children()) //collect info about entity guids
 	{
-		entarc.FillEntArcList();
+		if (strcmp(fg_node.attribute("EntityGUID").value(), "") != 0 || strcmp(fg_node.attribute("EntityGUID_64").value(), "") != 0)
+		{
+			m_map_guid_64.emplace(fg_node.attribute("EntityGUID").value(), fg_node.attribute("EntityGUID_64").value());
+		}
 	}
 	for (pugi::xml_node mission_node = doc.select_node("/Mission/Objects/Entity").node(); mission_node; mission_node = mission_node.next_sibling()) //for every entity
 	{
-
 		if (!mission_node.attribute("Type").empty())
 		{
 			for (auto& x : map_ent)
@@ -29,13 +31,6 @@ bool MissionConvert::Convert()
 				{
 					mission_node.attribute("Type").set_value(x.second.c_str());
 				}
-			}
-		}
-		for (auto& fg_node : doc.select_node("/Mission/Objects/Entity/FlowGraph/Nodes").node().children()) //collect info about entity guids
-		{
-			if (strcmp(fg_node.attribute("EntityGUID").value(), "") != 0 || strcmp(fg_node.attribute("EntityGUID_64").value(), "") != 0)
-			{
-				m_map_guid_64.emplace(fg_node.attribute("EntityGUID").value(), fg_node.attribute("EntityGUID_64").value());
 			}
 		}
 		if (!mission_node.attribute("Layer").empty()) //collect info about layers of entities
@@ -75,10 +70,9 @@ bool MissionConvert::Convert()
 				}
 			}
 		}
-		std::string ent_class = mission_node.attribute("EntityClass").as_string();
 		for (auto& val : map_ent) //some entities have different type name in game and in editor
 		{
-			if (ent_class == val.first)
+			if (mission_node.attribute("EntityClass").as_string() == val.first)
 			{
 				mission_node.attribute("EntityClass").set_value(val.second.c_str());
 				break;

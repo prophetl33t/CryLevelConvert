@@ -49,6 +49,19 @@ bool XMLConverter::ConvertFromDisk(const std::vector<std::string>& paths_in)
 	return success;
 }
 
+bool XMLConverter::ConvertFromByteArray(std::vector<unsigned char>& data)
+{
+	doc.load_buffer_inplace((void*)data.data(), data.size());
+	if (Convert())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 XMLConverter::XMLConverter(const std::string& path_in)
 {
 	xml_path = path_in;

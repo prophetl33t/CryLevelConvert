@@ -5,24 +5,18 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(3rdParty/pugixml-master/src)
-include_directories(3rdParty/Zippy)
-include_directories(3rdParty/Zippy/Zippy)
-include_directories(3rdParty/Zippy/Zippy/miniz)
 include_directories(Converters)
 include_directories(Converters/CustomFormat)
 include_directories(Converters/XML)
 include_directories(Utils)
+include_directories(3rdParty/zipper)
+
+add_subdirectory(3rdParty/zipper)
 
 add_executable(CryLevelConvert
         3rdParty/pugixml-master/src/pugiconfig.hpp
         3rdParty/pugixml-master/src/pugixml.cpp
         3rdParty/pugixml-master/src/pugixml.hpp
-        3rdParty/Zippy/Zippy/miniz/miniz.h
-        3rdParty/Zippy/Zippy/ZipArchive.hpp
-        3rdParty/Zippy/Zippy/ZipEntry.hpp
-        3rdParty/Zippy/Zippy/ZipException.hpp
-        3rdParty/Zippy/Zippy/ZipUtilities.hpp
-        3rdParty/Zippy/Zippy.hpp
         Converters/CustomFormat/CustomFormatConverter.cpp
         Converters/CustomFormat/CustomFormatConverter.h
         Converters/CustomFormat/VegetationDumpConvert.cpp
@@ -43,6 +37,12 @@ add_executable(CryLevelConvert
         Utils/Util.cpp
         Utils/Util.h
         main.cpp)
+		
+target_link_libraries(
+    CryLevelConvert
+    PUBLIC
+    staticZipper
+)
 
 file(GLOB_RECURSE _source_list *.cpp* *.h* *.hpp*)
 foreach(_source IN ITEMS ${_source_list})

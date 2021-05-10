@@ -1,6 +1,4 @@
-//#define MAIN_DISABLE
-#define USE_PAK_INTERACTION
-
+#include "CLCHeaders.h"
 #include "Converters/XML/MissionConvert.h"
 #include "Converters/XML/MovieDataConvert.h"
 #include "Converters/CustomFormat/VegetationDumpConvert.h"
@@ -9,34 +7,43 @@
 #include <chrono>
 #include <locale>
 #include <codecvt>
+#include <future>
 #ifdef USE_PAK_INTERACTION
-#include "Zippy.hpp"
+#include "zipper/unzipper.h"
 #endif
 
-inline void BatchConvert(const char* path, MissionConvert& c_m, MovieDataConvert& m_m, TerrainLayerInfoConvert& t_m)
+inline void BatchConvert(const char* path)
 {
-	std::string work_dir = std::filesystem::current_path().string() + "\\";
-	Zippy::ZipArchive arch(path);
-	arch.ExtractEntry(cry_fname::in::MISSIONXML, work_dir);
+	MissionConvert c_m;
+	MovieDataConvert m_m;
+	TerrainLayerInfoConvert t_m;
 
-	c_m.ConvertFromDisk(work_dir + cry_fname::in::MISSIONXML);
-	c_m.ExtractTOD();
+	zipper::Unzipper arch(path);
+	std::vector<unsigned char> data;
+	bool success = arch.extractEntryToMemory(cry_fname::in::MISSIONXML, data);
+	if (success)
+	{
+		c_m.ConvertFromByteArray(data);
+		c_m.ExtractTOD();
+	}
 
-	arch.ExtractEntry(cry_fname::in::MDATA, work_dir);
+	success = arch.extractEntryToMemory(cry_fname::in::MDATA, data);
+	if (success) m_m.ConvertFromByteArray(data);
 
-	m_m.ConvertFromDisk(work_dir + cry_fname::in::MDATA);
+	success = arch.extractEntryToMemory(cry_fname::in::LVLDATA, data);
+	if (success) t_m.ConvertFromByteArray(data);
 
-	arch.ExtractEntry(cry_fname::in::LVLDATA, work_dir);
-
-	t_m.ConvertFromDisk(work_dir + cry_fname::in::LVLDATA);
-
-	std::cout << "[BatchConvert] Complete!\n";
+	std::cout << "[BatchConvert] " << path << " extracted\n";
 }
 
 
 int main(int argc, char* argv[])
 {
 	auto begin = std::chrono::steady_clock::now();
+	std::ios_base::sync_with_stdio(false);
+
+	MissionConvert::GetEntArcObtainter().FillEntArcList();
+
 	MissionConvert mis_convert;
 	MovieDataConvert mdata_convert;
 	TerrainLayerInfoConvert terlay_convert;
@@ -50,14 +57,16 @@ int main(int argc, char* argv[])
 			{
 			#ifdef USE_PAK_INTERACTION
 			case Util::DataTypes::DIR:
+			{
 				for (auto& x : fs::recursive_directory_iterator(argv[a]))
 				{
 					if (x.path().extension() == ".pak" || x.path().extension() == ".zip")
 					{
-						BatchConvert(x.path().string().c_str(), mis_convert, mdata_convert, terlay_convert);
-					}	
+						std::async(std::launch::async,BatchConvert,x.path().string().c_str());
+					}
 				}
 				break;
+			}
 			#endif
 			case Util::DataTypes::MDATA:
 				mdata_convert.ConvertFromDisk(argv[a]);
@@ -68,16 +77,14 @@ int main(int argc, char* argv[])
 				break;
 			case Util::DataTypes::PAK:
 			#ifdef USE_PAK_INTERACTION
-				BatchConvert(argv[1], mis_convert, mdata_convert, terlay_convert);
+				BatchConvert(argv[1]);
 				break;
 			#endif
 			case Util::DataTypes::AIDUMP:
 				std::cout << "AIDump convert is now being handled by CryDumper!\n";
-				Util::DelayedExit();
 				break;
 			case Util::DataTypes::TERRAINDUMP:
 				std::cout << "Terrain convert is now being handled by CryDumper!\n";
-				Util::DelayedExit();
 				break;
 			case Util::DataTypes::VEGDUMP:
 				VegetationDumpConvert(argv[a], std::string(argv[a]) + "clc_veg.veg");
