@@ -50,6 +50,11 @@ MATH(EXPR ZIPPER_VERSION_NUMERIC "${ZIPPER_VERSION_MAJOR} * 10000 + ${ZIPPER_VER
 set(PACKAGE_VERSION "${ZIPPER_VERSION_MAJOR}.${ZIPPER_VERSION_MINOR}.${ZIPPER_VERSION_PATCH}${ZIPPER_VERSION_RELEASE}")
 set(PACKAGE_NAME "Zipper")
 
+# add make dist and make check target as they are already familiar for
+# everyone using the gnumake build
+add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
+add_custom_target(check COMMAND ${CMAKE_MAKE_PROGRAM} test)
+
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "C++ wrapper around minizip compression library.")
 set(CPACK_PACKAGE_NAME "${PACKAGE_NAME}")
 set(CPACK_PACKAGE_VENDOR "The SBML Team")
@@ -99,6 +104,64 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "")
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING
     "Choose the type of build to perform. The options are: None (CMAKE_CXX_FLAGS
 or CMAKE_C_FLAGS are used), Debug, Release, RelWithDebInfo, MinSizeRel." FORCE)
+endif()
+
+find_package(ZLIB)
+if(NOT ZLIB_FOUND)
+
+  set(ZLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/zlib)
+  set(ZLIB_BIN ${CMAKE_CURRENT_BINARY_DIR}/zlib_bin)
+  set(ZLIB_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/zlib_install)
+
+  #cmake Configure zlib
+  execute_process(
+    COMMAND ${CMAKE_COMMAND}
+    "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS} -fPIC"
+    "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS} -fPIC"
+    "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+    "-DCMAKE_INSTALL_PREFIX:PATH=${ZLIB_INSTALL}"
+    "-DCMAKE_BIN_DIR:PATH=${ZLIB_INSTALL}/bin"
+    "-DINSTALL_INC_DIR:PATH=${ZLIB_INSTALL}/include"
+    "-DINSTALL_LIB_DIR:PATH=${ZLIB_INSTALL}/lib"
+    "-DINSTALL_MAN_DIR:PATH=${ZLIB_INSTALL}/share/man"
+    "-DRENAME_ZCONF=OFF"
+    "-H${ZLIB_DIR}"
+    "-B${ZLIB_BIN}"
+    "-G" "${CMAKE_GENERATOR}"
+
+    WORKING_DIRECTORY ${ZLIB_DIR} 
+  )
+  #cmake Build zlib
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} "--build" "${ZLIB_BIN}"
+    "--config" "${CMAKE_BUILD_TYPE}"
+    "--target" "install"
+    "--" 
+  )
+  add_library(ZLIB INTERFACE)
+  #Set Zlib libaries for Unix system
+  set(ZLIB_LIBRARY ${ZLIB_INSTALL}/lib/libz.a)
+  set(ZLIB_LIBRARIES 
+    ${ZLIB_INSTALL}/lib/libz.a
+    ${ZLIB_INSTALL}/lib/libz.so
+  )
+  #Overwrite the Zlib libraries if MSVC
+  if(MSVC AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+	  if (BUILD_STATIC_VERSION)
+      set(ZLIB_LIBRARIES ${ZLIB_INSTALL}/lib/zlibstaticd.lib)
+	  else()
+	  set(ZLIB_LIBRARIES ${ZLIB_INSTALL}/lib/zlibd.lib)
+	  endif()
+  elseif(MSVC)
+	  if (BUILD_STATIC_VERSION)
+      set(ZLIB_LIBRARIES ${ZLIB_INSTALL}/lib/zlibstatic.lib)
+	  else()
+      set(ZLIB_LIBRARIES ${ZLIB_INSTALL}/lib/zlib.lib)
+	  endif()
+  endif()
+  set(ZLIB_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/zlib_install/include)
+
+  set(ZLIB_INCLUDE_DIR ${ZLIB_INCLUDE_DIRS})
 endif()
 
 find_package(ZLIB REQUIRED)
@@ -298,7 +361,7 @@ file(GLOB TEST_SOURCES
 
 file(READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION.txt" VERSION)
 
-option(BUILD_SHARED_VERSION "Build the shared version of the library." OFF)
+option(BUILD_SHARED_VERSION "Build the shared version of the library." ON)
 if (BUILD_SHARED_VERSION)
   add_library (${ZIPPER_LIBRARY} SHARED ${ZIPPER_SOURCES} ${MINIZIP_SOURCES} )
   target_include_directories(
@@ -333,11 +396,17 @@ if (BUILD_STATIC_VERSION)
   )
   target_link_libraries(${STATIC_ZIPPER_LIBRARY} ${ZLIB_LIBRARIES} ${EXTRA_LIBS})
   list(APPEND TARGET_LIST ${STATIC_ZIPPER_LIBRARY})
+
+  # Deprecated code: old zipper static lib was named libZipper-static.a but this was not
+  # a good unix name. Anyway keep installing it to avoid breaking programs link with it.
+  add_library (${ZIPPER_LIBRARY}-static STATIC ${ZIPPER_SOURCES} ${MINIZIP_SOURCES})
+  target_link_libraries(${ZIPPER_LIBRARY}-static ${ZLIB_LIBRARIES} ${EXTRA_LIBS})
+  list(APPEND TARGET_LIST ${ZIPPER_LIBRARY}-static)
 endif()
 
 
 
-option(BUILD_TEST "Build the test program." OFF)
+option(BUILD_TEST "Build the test program." ON)
 if (BUILD_TEST)
   enable_testing()
 

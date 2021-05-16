@@ -1,0 +1,7 @@
+[submodule "3rdParty/pugixml"]
+	path = 3rdParty/pugixml
+	url = https://github.com/zeux/pugixml
+[submodule "3rdParty/zipper"]
+	path = 3rdParty/zipper
+	url = https://github.com/sebastiandev/zipper
+	branch = develop

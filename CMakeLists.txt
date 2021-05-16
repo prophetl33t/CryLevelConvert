@@ -1,23 +1,21 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.20)
 project(CryLevelConvert)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_FLAGS -pthread)
 
-include_directories(3rdParty/pugixml-master/src)
+include_directories(3rdParty/pugixml/src)
 include_directories(Converters)
 include_directories(Converters/CustomFormat)
 include_directories(Converters/XML)
 include_directories(Utils)
 include_directories(3rdParty/zipper)
 
-add_subdirectory(3rdParty/zipper)
-
 add_executable(CryLevelConvert
-        3rdParty/pugixml-master/src/pugiconfig.hpp
-        3rdParty/pugixml-master/src/pugixml.cpp
-        3rdParty/pugixml-master/src/pugixml.hpp
+        3rdParty/pugixml/src/pugiconfig.hpp
+        3rdParty/pugixml/src/pugixml.cpp
+        3rdParty/pugixml/src/pugixml.hpp
         Converters/CustomFormat/CustomFormatConverter.cpp
         Converters/CustomFormat/CustomFormatConverter.h
         Converters/CustomFormat/VegetationDumpConvert.cpp
@@ -38,12 +36,16 @@ add_executable(CryLevelConvert
         Utils/Util.cpp
         Utils/Util.h
         main.cpp)
-		
-target_link_libraries(
-    CryLevelConvert
-    PUBLIC
-    staticZipper
-)
+				
+option(USE_PAK_INTERACTION "Activate support of .pak files." ON)
+
+if (USE_PAK_INTERACTION)
+add_compile_definitions(USE_PAK_INTERACTION)
+option(BUILD_TEST "Build the test program." OFF)
+option(BUILD_SHARED_VERSION "Build the shared version of the library." OFF)
+add_subdirectory(3rdParty/zipper)
+target_link_libraries(CryLevelConvert staticZipper)
+endif()
 
 file(GLOB_RECURSE _source_list *.cpp* *.h* *.hpp*)
 foreach(_source IN ITEMS ${_source_list})

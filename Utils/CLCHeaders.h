@@ -11,6 +11,3 @@
 #include "Util.h"
 
 namespace fs = std::filesystem;
-
-#define USE_PAK_INTERACTION
-//#define MAIN_DISABLE
