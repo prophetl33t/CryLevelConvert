@@ -47,6 +47,12 @@ jobs:
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
       
+    - name: Configure CMake again..
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      # Required for correct static zlib setup... 
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      
     - name: Build
       working-directory: ${{github.workspace}}/build
       shell: bash
