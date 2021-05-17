@@ -52,18 +52,12 @@ jobs:
       working-directory: ${{github.workspace}}/build
       # Required for correct static zlib setup... 
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-      
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1
-      with:
-        key: ${{ matrix.os }}-${{ matrix.type }}
-        max-size: 100M
-      
+
     - name: Build
       working-directory: ${{github.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE -D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache
+      run: cmake --build . --config $BUILD_TYPE
 
     - uses: actions/upload-artifact@v2
       if: runner.os == 'Windows'
