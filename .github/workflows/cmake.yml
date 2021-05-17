@@ -60,10 +60,16 @@ jobs:
       run: cmake --build . --config $BUILD_TYPE
 
     - uses: actions/upload-artifact@v2
+      if: runner.os == 'Windows'
       with:
         name: CLC-${{ matrix.os }}
         path: ${{github.workspace}}/build/Release/
-        retention-days: 1
+        
+    - uses: actions/upload-artifact@v2
+      if: runner.os != 'Windows'
+      with:
+        name: CLC-${{ matrix.os }}
+        path: ${{github.workspace}}/build/
         
   release:
       if: github.ref == 'refs/heads/master'
