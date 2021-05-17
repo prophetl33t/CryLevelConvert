@@ -63,13 +63,13 @@ jobs:
       if: runner.os == 'Windows'
       with:
         name: CLC-${{ matrix.os }}
-        path: ${{github.workspace}}/build/Release/
+        path: ${{github.workspace}}/build/Release/CryLevelConvert.exe
         
     - uses: actions/upload-artifact@v2
       if: runner.os != 'Windows'
       with:
         name: CLC-${{ matrix.os }}
-        path: ${{github.workspace}}/build/
+        path: ${{github.workspace}}/build/CryLevelConvert
         
   release:
       if: github.ref == 'refs/heads/master'
