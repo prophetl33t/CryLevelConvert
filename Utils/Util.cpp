@@ -60,7 +60,7 @@ pugi::xml_document Util::CreateLayerFile(std::string_view name, std::string_view
 	return layer;
 }
 
-int Util::DetectDataType(const std::string& path)
+Util::DATA_TYPES Util::DetectDataType(const std::string& path)
 {
 	std::ifstream file_r_check_type;
 	std::string buf_check;
@@ -68,43 +68,43 @@ int Util::DetectDataType(const std::string& path)
 	std::getline(file_r_check_type, buf_check);
 	if (std::filesystem::is_directory(path))
 	{
-		return Util::DataTypes::DIR;
+		return Util::DATA_TYPES::DIR;
 	}
 	else if (buf_check == "<MovieData>")
 	{
-		return Util::DataTypes::MDATA;
+		return Util::DATA_TYPES::MDATA;
 	}
 	else if (buf_check.find("Mission Name") != std::string::npos)
 	{
-		return Util::DataTypes::MISSION;
+		return Util::DATA_TYPES::MISSION;
 	}
 	else if (std::filesystem::path(path).extension() == ".pak" || std::filesystem::path(path).extension() == ".zip")
 	{
-		return Util::DataTypes::PAK;
+		return Util::DATA_TYPES::PAK;
 	}
 	else if (buf_check.find("AIPointsDump") != std::string::npos)
 	{
-		return Util::DataTypes::AIDUMP;
+		return Util::DATA_TYPES::AIDUMP;
 	}
 	else if (buf_check.find("Terrain") != std::string::npos)
 	{
-		return Util::DataTypes::TERRAINDUMP;
+		return Util::DATA_TYPES::TERRAINDUMP;
 	}
 	else if (buf_check.find("VegDump") != std::string::npos)
 	{
-		return Util::DataTypes::VEGDUMP;
+		return Util::DATA_TYPES::VEGDUMP;
 	}
 	else if (buf_check == "World")
 	{
-		return  Util::DataTypes::GEOMDUMP;
+		return  Util::DATA_TYPES::GEOMDUMP;
 	}
 	else if (buf_check.find("LevelData") != std::string::npos)
 	{
-		return Util::DataTypes::TERLAYDUMP;
+		return Util::DATA_TYPES::TERLAYDUMP;
 	}
 	else
 	{
-		return Util::DataTypes::UNKNOWN;
+		return Util::DATA_TYPES::UNKNOWN;
 	}
 }
 

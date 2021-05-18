@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.19.2)
 project(CryLevelConvert)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -35,7 +35,7 @@ add_executable(CryLevelConvert
         Utils/CryVersionDetect.h
         Utils/Util.cpp
         Utils/Util.h
-        main.cpp)
+        main.cpp Converters/CustomFormat/TerrainDatConvert.cpp Converters/CustomFormat/TerrainDatConvert.h)
 				
 option(USE_PAK_INTERACTION "Activate support of .pak files." ON)
 

@@ -50,41 +50,41 @@ inline void ConvertData(const char* path)
 
 	switch (Util::DetectDataType(path))
 	{
-	case Util::DataTypes::DIR:
+	case Util::DATA_TYPES::DIR:
 		ConvertData(path);
 		break;
-	case Util::DataTypes::MDATA:
+	case Util::DATA_TYPES::MDATA:
 		if (mdata_convert.ConvertFromDisk(path))
 		{
 			std::cout << "[MovieData] Converted moviedata to .lyr!\n";
 		}
 		break;
-	case Util::DataTypes::MISSION:
+	case Util::DATA_TYPES::MISSION:
 		if (mis_convert.ConvertFromDisk(path))
 		{
 			std::cout << "[MissionConvert] Converted mission to .lyr!\n";
 			mis_convert.ExtractTOD();
 		}
 		break;
-	case Util::DataTypes::PAK:
+	case Util::DATA_TYPES::PAK:
 		PakConvert(path);
 		break;
-	case Util::DataTypes::AIDUMP:
+	case Util::DATA_TYPES::AIDUMP:
 		std::cout << "Use CryDumper for AIDump.\n";
 		break;
-	case Util::DataTypes::TERRAINDUMP:
+	case Util::DATA_TYPES::TERRAINDUMP:
 		std::cout << "Use CryDumper for TerrainDump.\n";
 		break;
-	case Util::DataTypes::VEGDUMP:
+	case Util::DATA_TYPES::VEGDUMP:
 		VegetationDumpConvert(path, std::string(path) + "clc_veg.veg");
 		break;
-	case Util::DataTypes::GEOMDUMP:
+	case Util::DATA_TYPES::GEOMDUMP:
 		std::cout << "Use CryDumper for GeomDump.\n";
 		break;
-	case Util::DataTypes::TERLAYDUMP:
+	case Util::DATA_TYPES::TERLAYDUMP:
 		terlay_convert.ConvertFromDisk(path);
 		break;
-	case Util::DataTypes::UNKNOWN:
+	case Util::DATA_TYPES::UNKNOWN:
 		std::cout << "Unknown file format.\n";
 		break;
 	}

@@ -45,12 +45,9 @@ namespace Util
 
 	pugi::xml_document CreateLayerFile(std::string_view name, std::string_view guid = Util::GenerateRandomGUID(true)); //Create layer xml document with pre-generated layer structure
 
-	int DetectDataType(const std::string& path); //Detects data type of provided file.
-
-	namespace DataTypes
-	{
-		enum DATA_TYPES { DIR, MDATA, MISSION, PAK, AIDUMP, TERRAINDUMP, VEGDUMP, TERLAYDUMP, GEOMDUMP, UNKNOWN };
-	}
+	enum class DATA_TYPES { DIR, MDATA, MISSION, PAK, AIDUMP, TERRAINDUMP, VEGDUMP, TERLAYDUMP, GEOMDUMP, UNKNOWN };
+	
+	DATA_TYPES DetectDataType(const std::string& path); //Detects data type of provided file.
 
 	std::string PathWithoutFilename(std::string& path); //Trunc filename in path
 
