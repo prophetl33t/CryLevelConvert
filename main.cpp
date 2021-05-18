@@ -45,6 +45,9 @@ inline void ConvertData(const char* path)
 	MissionConvert mis_convert;
 	MovieDataConvert mdata_convert;
 	TerrainLayerInfoConvert terlay_convert;
+	if (!fs::exists(path))
+		std::cout << path << " doesn't exist.\n"; return;
+
 	switch (Util::DetectDataType(path))
 	{
 	case Util::DataTypes::DIR:
@@ -67,22 +70,22 @@ inline void ConvertData(const char* path)
 		PakConvert(path);
 		break;
 	case Util::DataTypes::AIDUMP:
-		std::cout << "AIDump convert is now being handled by CryDumper!\n";
+		std::cout << "Use CryDumper for AIDump.\n";
 		break;
 	case Util::DataTypes::TERRAINDUMP:
-		std::cout << "Terrain convert is now being handled by CryDumper!\n";
+		std::cout << "Use CryDumper for TerrainDump.\n";
 		break;
 	case Util::DataTypes::VEGDUMP:
 		VegetationDumpConvert(path, std::string(path) + "clc_veg.veg");
 		break;
 	case Util::DataTypes::GEOMDUMP:
-		std::cout << "Geom convert is now being handled by CryDumper!\n";
+		std::cout << "Use CryDumper for GeomDump.\n";
 		break;
 	case Util::DataTypes::TERLAYDUMP:
 		terlay_convert.ConvertFromDisk(path);
 		break;
 	case Util::DataTypes::UNKNOWN:
-		std::cout << "Unknown file type!\n";
+		std::cout << "Unknown file format.\n";
 		break;
 	}
 }

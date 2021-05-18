@@ -45,6 +45,7 @@ option(BUILD_TEST "Build the test program." OFF)
 option(BUILD_SHARED_VERSION "Build the shared version of the library." OFF)
 add_subdirectory(3rdParty/zipper)
 target_link_libraries(CryLevelConvert staticZipper)
+set_target_properties(dist check staticZipper Zipper-static PROPERTIES FOLDER ZipperTargets)
 endif()
 
 file(GLOB_RECURSE _source_list *.cpp* *.h* *.hpp*)
@@ -54,3 +55,5 @@ foreach(_source IN ITEMS ${_source_list})
     string(REPLACE "/" "\\" _group_path "${_group_path}")
     source_group("${_group_path}" FILES "${_source}")
 endforeach()
+
+set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT CryLevelConvert)
