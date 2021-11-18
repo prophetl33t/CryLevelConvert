@@ -154,7 +154,6 @@ void MissionConvert::ExtractTOD()
 		doc.select_node("/Mission/TimeOfDay").node().print(tod_stream_out);
 	}
 	tod_stream_out.close();
-
 }
 
 MissionConvert::MissionConvert()

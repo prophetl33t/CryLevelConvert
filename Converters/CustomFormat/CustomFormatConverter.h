@@ -1,13 +1,13 @@
 #pragma once
 #include "../../Utils/CLCHeaders.h"
-class CLCDumpConverter
+class CustomFormatConverter
 {
 private:
 	std::ofstream fstream_out;
 	std::ifstream fstream_in;
 	std::string buf;
 public:
-	CLCDumpConverter(std::string_view path_in, std::string_view path_out);
+	CustomFormatConverter(std::string_view path_in, std::string_view path_out);
 	virtual bool Convert() = 0;
 };
 
