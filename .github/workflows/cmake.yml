@@ -62,19 +62,13 @@ jobs:
     - uses: actions/upload-artifact@v2
       if: runner.os == 'Windows'
       with:
-        name: CLC-Windows
+        name: CLC-${{ matrix.os }}
         path: ${{github.workspace}}/build/Release/CryLevelConvert.exe
         
     - uses: actions/upload-artifact@v2
-      if: runner.os == 'Linux'
+      if: runner.os != 'Windows'
       with:
-        name: CLC-Linux
-        path: ${{github.workspace}}/build/CryLevelConvert
-        
-    - uses: actions/upload-artifact@v2
-      if: runner.os == 'macOS'
-      with:
-        name: CLC-MacOS
+        name: CLC-${{ matrix.os }}
         path: ${{github.workspace}}/build/CryLevelConvert
         
   release:
@@ -93,6 +87,6 @@ jobs:
             automatic_release_tag: "latest"
             title: "CLC Build"
             files: |
-              CLC-Windows-latest
-              CLC-Linux-latest
-              CLC-MacOS-latest   
+              CLC-windows-latest
+              CLC-ubuntu-latest
+              CLC-macos-latest   
