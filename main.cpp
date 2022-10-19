@@ -45,9 +45,10 @@ inline void ConvertData(const char* path)
 	MissionConvert mis_convert;
 	MovieDataConvert mdata_convert;
 	TerrainLayerInfoConvert terlay_convert;
-	if (!fs::exists(path))
-		std::cout << path << " doesn't exist.\n"; return;
-
+	if (!fs::exists(path)){
+		std::cout << path << " doesn't exist.\n";
+		return;
+	}
 	switch (Util::DetectDataType(path))
 	{
 	case Util::DATA_TYPES::DIR:
